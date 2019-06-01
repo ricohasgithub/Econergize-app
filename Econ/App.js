@@ -1,55 +1,52 @@
-import React, { Component } from 'react';
-import { Text, View, StyleSheet, Alert, AppRegistry } from 'react-native';
-import { Constants, BarCodeScanner, Permissions } from 'expo';
+import * as React from 'react';
+import { Text, View, StyleSheet, Button } from 'react-native';
+import { Constants, Permissions, BarCodeScanner } from 'expo';
 
-export default class App extends React.Component {
+import * as firebase from 'firebase';
+
+export default class BarcodeScannerExample extends React.Component {
   state = {
-    hasCameraPermission: null
+    hasCameraPermission: null,
+    scanned: false,
   };
 
-  componentDidMount() {
-    this._requestCameraPermission();
+  async componentDidMount() {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA);
+    this.setState({ hasCameraPermission: status === 'granted' });
   }
 
-  _requestCameraPermission = async () => {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA);
-    this.setState({
-      hasCameraPermission: status === 'granted',
-    });
-  };
-
-  _handleBarCodeRead = data => {
-    Alert.alert(
-      'Scan successful!',
-      JSON.stringify(data)
-    );
-  };
-
   render() {
+    const { hasCameraPermission, scanned } = this.state;
+
+    if (hasCameraPermission === null) {
+      return <Text>Requesting for camera permission</Text>;
+    }
+    if (hasCameraPermission === false) {
+      return <Text>No access to camera</Text>;
+    }
     return (
-      <View style={styles.container}>
-        {this.state.hasCameraPermission === null ?
-          <Text>Requesting for camera permission</Text> :
-          this.state.hasCameraPermission === false ?
-            <Text>Camera permission is not granted</Text> :
-            <BarCodeScanner
-              onBarCodeRead={this._handleBarCodeRead}
-              style={{ height: 800, width: 400 }}
-            />
-        }
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'flex-end',
+        }}>
+        <BarCodeScanner
+          onBarCodeScanned={scanned ? undefined : this.handleBarCodeScanned}
+          style={StyleSheet.absoluteFillObject}
+        />
+
+        {scanned && (
+          <Button
+            title={'Tap to Scan Again'}
+            onPress={() => this.setState({ scanned: false })}
+          />
+        )}
       </View>
     );
   }
+
+  handleBarCodeScanned = ({ type, data }) => {
+    this.setState({ scanned: true });
+    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+  };
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: Constants.statusBarHeight,
-    backgroundColor: '#ecf0f1',
-  }
-});
-
-AppRegistry.registerComponent('Econ', () => App);
