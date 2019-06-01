@@ -64,7 +64,7 @@ export default class App extends React.Component {
          keyboardType = 'email-address'
          onChangeText={(email) => this.setState({ email })}
          placeholder='email'
-         placeholderTextColor = 'white'
+         placeholderTextColor = 'gray'
          style={styles.input}
        />
        <TextInput
@@ -72,13 +72,15 @@ export default class App extends React.Component {
          onChangeText={(password) => this.setState({ password })}
          placeholder={'password'}
          secureTextEntry={true}
-         placeholderTextColor = 'white'
-        style={styles.input}
+         placeholderTextColor = 'gray'
+         style={styles.input}
        />
        <TouchableOpacity
           style={styles.button}
           onPress={this.onLogin.bind(this)}
-       />
+       >
+        <Text style={styles.buttonText}> Sign Up / Login </Text>
+       </TouchableOpacity>
        </View>
       );
 
@@ -124,17 +126,11 @@ export default class App extends React.Component {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'salmon',
-  },
-  titleText:{
-    fontFamily: 'Baskerville',
-    fontSize: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: 'white',
   },
   button: {
     alignItems: 'center',
-    backgroundColor: 'powderblue',
+    backgroundColor: 'green',
     width: 200,
     height: 44,
     padding: 10,
@@ -144,19 +140,21 @@ export default class App extends React.Component {
     marginBottom: 10,
   },
   buttonText:{
-    fontFamily: 'Baskerville',
+    fontFamily: 'Arial',
+    color: 'white',
     fontSize: 20,
     alignItems: 'center',
     justifyContent: 'center',
   },
   input: {
     width: 200,
-    fontFamily: 'Baskerville',
+    fontFamily: 'Arial',
+    color: 'black',
     fontSize: 20,
     height: 44,
     padding: 10,
-    borderWidth: 1,
-    borderColor: 'white',
+    borderWidth: 2,
+    borderColor: 'black',
     marginVertical: 10,
   },
 });
