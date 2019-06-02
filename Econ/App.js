@@ -139,7 +139,6 @@ export default class App extends React.Component {
 
       let reqUrl = "https://api.barcodelookup.com/v2/products?barcode=" + data + "&formatted=y&key=qsck3p89hna02fijg03an4kz0cm52k";
 
-      try {
       fetch(reqUrl)
         .then(function(response) {
           return response.json();
@@ -162,9 +161,6 @@ export default class App extends React.Component {
         .catch((error) => {
           console.log(error);
         });
-      } throw (error) {
-        console.log(error);
-      }
 
 
     alert(`Bar code with type ${type} and data ${data} has been scanned!`);
