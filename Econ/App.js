@@ -79,7 +79,7 @@ export default class App extends React.Component {
           style={styles.button}
           onPress={this.onLogin.bind(this)}
        >
-        <Text style={styles.buttonText}> Sign Up / Login </Text>
+        <Text style={styles.buttonText}> Login </Text>
        </TouchableOpacity>
        </View>
       );
@@ -116,7 +116,24 @@ export default class App extends React.Component {
   }
 
   handleBarCodeScanned = ({ type, data }) => {
-    this.setState({ scanned: true });
+      this.setState({ scanned: true });
+
+      let reqUrl = "https://api.barcodelookup.com/v2/products?barcode=" + data + "&formatted=y&key=qsck3p89hna02fijg03an4kz0cm52k";
+
+      fetch(reqUrl)
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(prod) {
+          // do something with jsonResponse
+          console.log(prod.products[0].product_name);
+          console.log(prod.products[0].manufacturer);
+          console.log(prod);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+
     alert(`Bar code with type ${type} and data ${data} has been scanned!`);
   }
 }
