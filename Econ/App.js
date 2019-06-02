@@ -2,7 +2,18 @@ import * as React from 'react';
 import { Alert, Text, View, StyleSheet, Button, TouchableOpacity, Form, Input, Label, TextInput } from 'react-native';
 import { Constants, Permissions, BarCodeScanner } from 'expo';
 
-import firebase from './firebase'
+import * as firebase from 'firebase';
+import '@firebase/firestore';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAJWkVyOlQhLk3nn-kzqYq_ZinqBgLRVUA",
+  authDomain: "econergize.firebaseapp.com",
+  databaseURL: "https://econergize.firebaseio.com",
+  projectId: "econergize",
+  storageBucket: "econergize.appspot.com"
+};
+
+firebase.initializeApp(firebaseConfig);
 
 export default class App extends React.Component {
 
@@ -116,7 +127,15 @@ export default class App extends React.Component {
   }
 
   handleBarCodeScanned = ({ type, data }) => {
+
       this.setState({ scanned: true });
+
+      let cemail = this.state.email;
+
+      console.log(cemail);
+
+      let prodname = "";
+      let manufacturer = "";
 
       let reqUrl = "https://api.barcodelookup.com/v2/products?barcode=" + data + "&formatted=y&key=qsck3p89hna02fijg03an4kz0cm52k";
 
@@ -126,13 +145,26 @@ export default class App extends React.Component {
         })
         .then(function(prod) {
           // do something with jsonResponse
+          prodname = prod.products[0].product_name;
           console.log(prod.products[0].product_name);
+          manufacturer = prod.products[0].manufacturer;
           console.log(prod.products[0].manufacturer);
           console.log(prod);
+
+          const db = firebase.firestore();
+
+          let cUserDocument = db.collection("users").doc(cemail);
+
+          cUserDocument.collection("Items").add({
+            Name: prodname,
+            SusVal: 0.5
+          })
+
         })
         .catch((error) => {
           console.error(error);
         });
+
 
     alert(`Bar code with type ${type} and data ${data} has been scanned!`);
   }
