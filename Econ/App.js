@@ -154,7 +154,7 @@ export default class App extends React.Component {
 
           cUserDocument.collection("Items").add({
             Name: prodname,
-            SusVal: 0.5
+            SusVal: 60
           })
 
         })
