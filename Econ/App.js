@@ -137,7 +137,7 @@ export default class App extends React.Component {
       let prodname = "";
       let manufacturer = "";
 
-      let reqUrl = "https://api.barcodelookup.com/v2/products?barcode=" + data + "&formatted=y&key=qsck3p89hna02fijg03an4kz0cm52k";
+      let reqUrl = "https://api.barcodelookup.com/v2/products?barcode=" + data + "&formatted=y&key=g3qlnst821w86d9asxxwau65btsrix";
 
       fetch(reqUrl)
         .then(function(response) {
@@ -176,7 +176,7 @@ export default class App extends React.Component {
   },
   button: {
     alignItems: 'center',
-    backgroundColor: 'green',
+    backgroundColor: '#4286f4',
     width: 200,
     height: 44,
     padding: 10,
